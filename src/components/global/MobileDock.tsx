@@ -1,8 +1,13 @@
-import { BsGithub, BsSpotify } from 'react-icons/bs';
+import { BsGithub } from 'react-icons/bs';
 import { IoIosMail } from 'react-icons/io';
 import { FaPhoneAlt } from 'react-icons/fa';
+import { FiEdit } from 'react-icons/fi';
 
-export default function MobileDock() {
+interface MobileDockProps {
+  onNotesClick: () => void;
+}
+
+export default function MobileDock({ onNotesClick }: MobileDockProps) {
   return (
     <div className="fixed bottom-0 left-0 right-0 md:hidden">
       <div className="mx-4 mb-4 p-2 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10">
@@ -16,9 +21,9 @@ export default function MobileDock() {
           <a href="https://github.com/AKhilRaghav0" target="_blank" className="p-2">
             <BsGithub size={55} className="text-white hover:scale-110 transition-transform" />
           </a>
-          <a href="https://open.spotify.com/user/31gms3hlihdvvu6kxh7o6gg42wuy" target="_blank" className="p-2">
-            <BsSpotify size={55} className="text-white hover:scale-110 transition-transform" />
-          </a>
+          <button onClick={onNotesClick} className="p-2">
+            <FiEdit size={55} className="text-white hover:scale-110 transition-transform" />
+          </button>
         </div>
       </div>
     </div>

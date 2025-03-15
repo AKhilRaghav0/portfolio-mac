@@ -1,26 +1,39 @@
 ---
+import BaseHead from '../components/global/BaseHead.astro';
 import Layout from '../layouts/Layout.astro';
-import LandingPage from '../components/LandingPage.astro';
+import MacTerminal from '../components/global/MacTerminal';
+import MobileDock from '../components/global/MobileDock';
+import DesktopDock from '../components/global/DesktopDock';
+import NotesApp from '../components/NotesApp';
+
+const title = "Akhil Raghav's Portfolio";
+const description = "Software Engineer & Full Stack Developer";
 ---
 
-<!-- 
-  Customize these values for your portfolio:
-  - title: Your name and role
-  - description: Brief description of your expertise
-  - canonical: Your website URL
-  - openGraph: Social media sharing metadata
--->
-<Layout
-  title='Akhil Raghav - Full Stack Developer & CP Enthusiast'
-  description='Full Stack Developer based in India, specializing in Backend Development, Competitive Programming, and iOS Development'
-  canonical='https://akhilraghav.dev'
-  openGraph={{
-    url: 'https://akhilraghav.dev',
-    title: 'Akhil Raghav - Full Stack Developer & CP Enthusiast',
-    description:
-      'Full Stack Developer based in India, specializing in Backend Development, Competitive Programming, and iOS Development',
-    site_name: 'Akhil Raghav',
-  }}
->
-  <LandingPage />
-</Layout>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+  <body>
+    <Layout>
+      <div class="relative min-h-screen">
+        <MacTerminal client:load />
+        <div class="md:hidden">
+          <div id="mobileNotes" class="fixed inset-0 bg-mac-light dark:bg-mac-dark z-50 hidden">
+            <NotesApp client:load />
+          </div>
+        </div>
+        <MobileDock 
+          client:load 
+          onNotesClick={() => {
+            const mobileNotes = document.getElementById('mobileNotes');
+            if (mobileNotes) {
+              mobileNotes.classList.toggle('hidden');
+            }
+          }}
+        />
+        <DesktopDock client:load />
+      </div>
+    </Layout>
+  </body>
+</html>
