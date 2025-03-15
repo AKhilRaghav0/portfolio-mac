@@ -15,7 +15,6 @@ type ChatHistory = {
   input: string;
 };
 
-
 const PLACEHOLDER_MESSAGES = [
   'Type your question...',
   'How old are you?',
@@ -68,7 +67,6 @@ export default function MacTerminal() {
     return () => clearTimeout(timeout);
   }, [placeholder, isDeleting, currentPlaceholderIndex]);
 
-  // Customize this welcome message with your information
   const welcomeMessage = `Welcome to My Portfolio
 
 Name: Akhil Raghav
@@ -87,7 +85,6 @@ Ask me anything!
     day: 'numeric',
     year: 'numeric',
   });
-
 
   const systemPrompt = `IMPORTANT: You ARE Akhil Raghav himself. You must always speak in first-person ("I", "my", "me"). Never refer to "Akhil" in third-person.
 
@@ -128,7 +125,7 @@ Response rules:
 4. Use markdown formatting when appropriate
 5. Maintain a friendly, conversational tone
 
-If a question is unrelated to my work or portfolio, say: "That's outside my area of expertise. Feel free to email me at  work@akhilraghav.com and we can discuss further!"`;
+If a question is unrelated to my work or portfolio, say: "That's outside my area of expertise. Feel free to email me at work@akhilraghav.com and we can discuss further!"`;
 
   useEffect(() => {
     setChatHistory((prev) => ({
@@ -205,7 +202,7 @@ If a question is unrelated to my work or portfolio, say: "That's outside my area
   };
 
   return (
-    <div className='bg-black/90 w-[600px] h-[400px] rounded-lg overflow-hidden shadow-lg mx-4 sm:mx-0'>
+    <div className='w-[95vw] md:w-[600px] h-[400px] bg-black/90 rounded-lg overflow-hidden shadow-lg mx-4 sm:mx-0'>
       {/* Main Toolbar */}
       <div className='bg-gray-800 h-6 flex items-center px-2 select-none'>
         {/* Window Controls */}
@@ -248,43 +245,46 @@ If a question is unrelated to my work or portfolio, say: "That's outside my area
           </button>
           <select className='bg-transparent text-gray-400 hover:text-gray-200 text-xs outline-none cursor-pointer transition-colors duration-150 hover:bg-gray-700/30 rounded px-1'>
             <option value="100" className='bg-gray-800 text-gray-200'>100%</option>
-            <option value="125" className='bg-gray-800 text-gray-200'>125%</option>
-            <option value="150" className='bg-gray-800 text-gray-200'>150%</option>
-            <option value="75" className='bg-gray-800 text-gray-200'>75%</option>
           </select>
         </div>
       </div>
 
       {/* Terminal Content */}
-      <div className='p-4 text-gray-200 font-mono text-xs h-[calc(400px-1.5rem)] flex flex-col' style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-        <div className='flex-1 overflow-y-auto'>
-          {chatHistory.messages.map((msg, index) => (
-            <div key={index} className='mb-2'>
-              {msg.role === 'user' ? (
-                <div className='flex items-start space-x-2'>
-                  <span className='text-green-400'>{'>'}</span>
-                  <pre className='whitespace-pre-wrap font-[JetBrains_Mono]'>{msg.content}</pre>
+      <div className='p-4 font-mono text-sm text-white/90 h-[calc(100%-1.5rem)] overflow-y-auto'>
+        <div className='space-y-2'>
+          {chatHistory.messages.map((message, index) => (
+            <div key={index} className='whitespace-pre-wrap'>
+              {message.role === 'user' ? (
+                <div className='flex items-start'>
+                  <span className='text-green-400 mr-2'>❯</span>
+                  <span>{message.content}</span>
                 </div>
               ) : (
-                <pre className='whitespace-pre-wrap font-[JetBrains_Mono]'>{msg.content}</pre>
+                <div>{message.content}</div>
               )}
             </div>
           ))}
-          {isTyping && <div className='animate-pulse'>...</div>}
           <div ref={messagesEndRef} />
         </div>
-        <form onSubmit={handleSubmit} className='mt-2'>
-          <div className='flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2'>
-            <span className='whitespace-nowrap font-[JetBrains_Mono]'>akhil@portfolio root %</span>
-            <input
-              type='text'
-              value={chatHistory.input}
-              onChange={handleInputChange}
-              className='w-full sm:flex-1 bg-transparent outline-none text-white placeholder-gray-400 font-[JetBrains_Mono]'
-              placeholder={placeholder}
-            />
-          </div>
+
+        {/* Input Area */}
+        <form onSubmit={handleSubmit} className='mt-4 flex items-center'>
+          <span className='text-green-400 mr-2'>❯</span>
+          <input
+            type='text'
+            value={chatHistory.input}
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            className='flex-1 bg-transparent outline-none caret-white/60 text-white/90 placeholder-white/30'
+            autoFocus
+          />
         </form>
+
+        {isTyping && (
+          <div className='mt-2 text-white/60'>
+            <span className='animate-pulse'>▋</span>
+          </div>
+        )}
       </div>
     </div>
   );

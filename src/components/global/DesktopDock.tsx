@@ -3,14 +3,11 @@ import { BsGithub, BsSpotify } from 'react-icons/bs';
 import { IoIosMail } from 'react-icons/io';
 import { VscVscode } from 'react-icons/vsc';
 import { FaRegEdit } from 'react-icons/fa';
-import { FiEdit } from 'react-icons/fi';
 import BlogWindow from '../BlogWindow';
-import NotesWindow from '../NotesWindow';
 
 export default function DesktopDock() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const [isBlogOpen, setIsBlogOpen] = useState(false);
-  const [isNotesOpen, setIsNotesOpen] = useState(false);
 
   const handleEmailClick = () => {
     window.location.href = 'mailto:work@akhilraghav.com';
@@ -36,10 +33,6 @@ export default function DesktopDock() {
     window.location.href = 'vscode:/';
   };
 
-  const handleNotesClick = () => {
-    setIsNotesOpen(true);
-  };
-
   const Tooltip = ({ text }: { text: string }) => (
     <div className='absolute -top-14 left-1/2 -translate-x-1/2'>
       <div className='relative px-3 py-1 bg-[#1d1d1f]/80 backdrop-blur-sm text-white text-sm rounded-lg whitespace-nowrap border border-px border-gray-600'>
@@ -52,7 +45,6 @@ export default function DesktopDock() {
   return (
     <>
       {isBlogOpen && <BlogWindow isVisible={isBlogOpen} onClose={() => setIsBlogOpen(false)} />}
-      {isNotesOpen && <NotesWindow onClose={() => setIsNotesOpen(false)} />}
       
       <div className='fixed bottom-0 left-1/2 -translate-x-1/2 hidden md:block z-50'>
         <div className='relative mb-2 p-3 bg-gradient-to-t from-gray-700 to-gray-800 backdrop-blur-2xl rounded-2xl'>
@@ -150,17 +142,6 @@ export default function DesktopDock() {
                 <VscVscode size={45} className='text-blue-500' />
               </div>
               {hoveredIcon === 'vscode' && <Tooltip text='Launch VS Code' />}
-            </button>
-
-            {/* Notes */}
-            <button
-              onClick={handleNotesClick}
-              className='relative'
-            >
-              <FiEdit size={45} className='text-white' />
-              <div className='absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap'>
-                Notes
-              </div>
             </button>
           </div>
         </div>

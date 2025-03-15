@@ -1,39 +1,47 @@
 ---
-import BaseHead from '../components/global/BaseHead.astro';
+export const prerender = false;
+import { getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import MacTerminal from '../components/global/MacTerminal';
-import MobileDock from '../components/global/MobileDock';
-import DesktopDock from '../components/global/DesktopDock';
-import NotesApp from '../components/NotesApp';
+import AppLayout from '../layouts/AppLayout';
+import macBackground1 from '../assets/images/mac-background1.jpg';
+import macBackground2 from '../assets/images/mac-background2.jpg';
+import macBackground3 from '../assets/images/mac-background3.jpg';
 
-const title = "Akhil Raghav's Portfolio";
-const description = "Software Engineer & Full Stack Developer";
+const backgrounds = [macBackground1, macBackground2, macBackground3];
+
+function getRandomBackground() {
+  return `bg-${Math.floor(Math.random() * backgrounds.length) + 1}`;
+}
+
+const optimizedBackgrounds = await Promise.all(
+  backgrounds.map((bg) =>
+    getImage({
+      src: bg,
+      width: 3500,
+    })
+  )
+);
+
+const backgroundMap = Object.fromEntries(
+  optimizedBackgrounds.map((bg, index) => [`bg-${index + 1}`, bg.src])
+);
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead title={title} description={description} />
-  </head>
-  <body>
-    <Layout>
-      <div class="relative min-h-screen">
-        <MacTerminal client:load />
-        <div class="md:hidden">
-          <div id="mobileNotes" class="fixed inset-0 bg-mac-light dark:bg-mac-dark z-50 hidden">
-            <NotesApp client:load />
-          </div>
-        </div>
-        <MobileDock 
-          client:load 
-          onNotesClick={() => {
-            const mobileNotes = document.getElementById('mobileNotes');
-            if (mobileNotes) {
-              mobileNotes.classList.toggle('hidden');
-            }
-          }}
-        />
-        <DesktopDock client:load />
-      </div>
-    </Layout>
-  </body>
-</html>
+<Layout
+  title='Akhil Raghav - Full Stack Developer & CP Enthusiast'
+  description='Full Stack Developer based in India, specializing in Backend Development, Competitive Programming, and iOS Development'
+  canonical='https://akhilraghav.dev'
+  openGraph={{
+    url: 'https://akhilraghav.dev',
+    title: 'Akhil Raghav - Full Stack Developer & CP Enthusiast',
+    description:
+      'Full Stack Developer based in India, specializing in Backend Development, Competitive Programming, and iOS Development',
+    site_name: 'Akhil Raghav',
+  }}
+>
+  <AppLayout
+    client:load
+    initialBg={getRandomBackground()}
+    backgroundMap={backgroundMap}
+  />
+</Layout>
