@@ -1,7 +1,17 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "flutter build web --release",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "astro",
-  "outputDirectory": "dist"
+  "installCommand": "echo 'No install needed'",
+  "framework": null,
+  "outputDirectory": "build/web",
+  "public": false,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "github": {
+    "silent": true
+  }
 } 
